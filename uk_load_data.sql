@@ -3,25 +3,14 @@
 -- USE accidents;
 
 /* -------------------------------- */
-/* Create Tables */
--- CREATE TABLE accident(
--- 	accident_index VARCHAR(13),
---     Location_Easting_OSGR INT,
---     Location_Northing_OSGR INT,
---     Longitude DECIMAL,
---     Latitude DECIMAL,
---     Police Force INT,
---     accident_severity INT,
---     number_of_vehicles INT,
---     number_of_casualities INT,
---     date_acc DATE,
---     time_acc TIME,
---     speed_limit INT,
---     weather_conditions INT
--- );
+
+CREATE TABLE vehicle_types(
+	Vehicle_Type INT, --PRIMARY KEY
+    label VARCHAR(50)
+);
 
 CREATE TABLE accident(
-    Accident_Index VARCHAR(13), 
+    Accident_Index VARCHAR(13), --PRIMARY KEY 
     Location_Easting_OSGR INT, 
     Location_Northing_OSGR INT,
     Longitude DECIMAL,
@@ -55,25 +44,21 @@ CREATE TABLE accident(
     LSOA_of_Accident_Location VARCHAR(9)
 );
 
-CREATE TABLE vehicles(
-	accident_index VARCHAR(13),
-    vehicle_type VARCHAR(50)
-);
 
 /* First: for vehicle types, create new csv by extracting data from Vehicle Type sheet from Road-Accident-Safety-Data-Guide.xls */
-CREATE TABLE vehicle_types(
-    Accident_Index VARCHAR(13), 
+CREATE TABLE vehicles(
+    Accident_Index VARCHAR(13), --REFERENCES accident (Accident_Index) 
     Vehicle_Reference INT, 
-    Vehicle_Type INT, 
+    Vehicle_Type INT, --REFERENCES vehicle_types(Vehicle_Type) 
     Towing_and_Articulation INT,
     Vehicle_Manoeuvre INT, 
-    Vehicle_Location-Restricted_Lane INT,
+    Vehicle_Location_Restricted_Lane INT,
     Junction_Location INT,
     Skidding_and_Overturning INT,
     Hit_Object_in_Carriageway INT,
     Vehicle_Leaving_Carriageway INT,
     Hit_Object_off_Carriageway INT,
-    1st_Point_of_Impact INT,
+    Firstst_Point_of_Impact INT,
     Was_Vehicle_Left_Hand_Drive INT,
     Journey_Purpose_of_Driver INT,
     Sex_of_Driver INT,
@@ -93,62 +78,17 @@ COPY accident
 FROM 'C:/Users/seann/projs/uk_accidents/data/Accidents_2015.csv' 
 DELIMITER ',' 
 CSV HEADER;
--- LOAD DATA LOCAL INFILE 'C:\\Users\\seann\\projs\\uk_accidents\\data\\Accidents_2015.csv'
--- INTO TABLE accident
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 LINES
--- (@col1, @dummy, @dummy, @dummy, @dummy, @dummy, @col2, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy)
--- SET accident_index=@col1, accident_severity=@col2;
+
+COPY vehicles 
+FROM 'C:/Users/seann/projs/uk_accidents/data/Vehicles_2015.csv' 
+DELIMITER ',' 
+CSV HEADER;
 
 
--- LOAD DATA LOCAL INFILE 'C:\\Users\\seann\\projs\\uk_accidents\\data\\Vehicles_2015.csv'
--- INTO TABLE vehicles
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 LINES
--- (@col1, @dummy, @col2, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy)
--- SET accident_index=@col1, vehicle_type=@col2;
-
-
--- LOAD DATA LOCAL INFILE 'C:\\Users\\seann\\projs\\uk_accidents\\data\\vehicle_types.csv'
--- INTO TABLE vehicle_types
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 LINES;
+COPY vehicle_types 
+FROM 'C:/Users/seann/projs/uk_accidents/data/vehicle_types.csv' 
+DELIMITER ',' 
+CSV HEADER;
 
 /* -------------------------------- */
 
-/* -------------------------------- */
-/* Load Data */
--- LOAD DATA LOCAL INFILE 'C:\\Users\\seann\\projs\\uk_accidents\\data\\Accidents_2015.csv'
--- INTO TABLE accident
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 LINES
--- (@col1, @dummy, @dummy, @dummy, @dummy, @dummy, @col2, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy)
--- SET accident_index=@col1, accident_severity=@col2;
-
-
--- LOAD DATA LOCAL INFILE 'C:\\Users\\seann\\projs\\uk_accidents\\data\\Vehicles_2015.csv'
--- INTO TABLE vehicles
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 LINES
--- (@col1, @dummy, @col2, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy, @dummy)
--- SET accident_index=@col1, vehicle_type=@col2;
-
-
--- LOAD DATA LOCAL INFILE 'C:\\Users\\seann\\projs\\uk_accidents\\data\\vehicle_types.csv'
--- INTO TABLE vehicle_types
--- FIELDS TERMINATED BY ','
--- ENCLOSED BY '"'
--- LINES TERMINATED BY '\n'
--- IGNORE 1 LINES;
-
-/* -------------------------------- */
